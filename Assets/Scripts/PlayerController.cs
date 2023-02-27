@@ -3,61 +3,71 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
-{
-    [SerializeField] float speed = 5f;
-    [SerializeField] float jumpForce = 5f;
+{ 
+    private bool grounded;
     [SerializeField] Rigidbody rb;
-    [SerializeField] LayerMask groundMask;
+    
+    [Header("Movement Settings")]
+    [SerializeField] float speed = 5f;
 
+    [Header("Jump Settings")]
+    [SerializeField]float jumpHeight = 10; //altezza che si raggiunge con il salto
+    [SerializeField] int maxJumpCount = 2; //numero di salti a disposizione
+    [SerializeField] int jumpsRemaining = 0; 
 
-    bool isGrounded = false;
+    public Vector2 turn;
+    public float sensitivity = .5f;
+    
 
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+       rb = gameObject.GetComponent<Rigidbody>();  
+
+       Cursor.lockState = CursorLockMode.Locked;
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        float xMove = Input.GetAxisRaw("Vertical");  //GetAxis no mezze misure, GetAxisRaw aggiunge mezze misure da tool, altrimenti regolazione a mano da Unity/Edit/Project Secting/Input Manager
-        float zMove = Input.GetAxisRaw("Horizontal");
-
+        float xMove = Input.GetAxisRaw("Horizontal");  
+        float zMove = Input.GetAxisRaw("Vertical");
 
         //costruisco il vettore di movimwento
-        Vector3 playerMovement = (Vector3.left * xMove + Vector3.forward * zMove).normalized * speed /** Time.deltaTime */;
-
+        Vector3 playerMovement = (Vector3.left * xMove + Vector3.forward * zMove).normalized * speed;
+         
         //applico la mia velocità al vettore di movimento
         playerMovement.y = rb.velocity.y;
-
-
-        if (Input.GetButtonDown("Jump") && isGrounded)
-        {
-            playerMovement.y += Mathf.Sqrt(jumpForce * -2f * (-9.81f));
-        }
 
         //applico il vettore di movimento al rigidbody
         rb.velocity = playerMovement;
 
+        //quando uso il comando Space e ho un numero di salti a disposizione maggiore di 0: creo una forza dal basso verso l'alto sul player con il limite del jumpHeight
+        if ((Input.GetKeyDown(KeyCode.Space)) && (jumpsRemaining > 0) )
+        {
+           rb.AddForce(Vector3.up * jumpHeight, ForceMode.Impulse);
+           jumpsRemaining -= 1; //sottraggo un salto dall'elenco
+        }
+
+        turn.y += Input.GetAxis("Mouse Y") * sensitivity;
+        turn.x += Input.GetAxis("Mouse X") * sensitivity;
+        transform.localRotation = Quaternion.Euler(-turn.y, turn.x, 0);
     }
 
-    private void OnCollisionEnter(Collision other) // quando collide
+    public void OnCollisionEnter(Collision collision)
     {
-        if (other.transform.CompareTag("Ground")) //se collide con tag Ground è true riprendendo la funzione (Input.GetButtonDown("Jump") && isGrounded) sopra
+        if(collision.gameObject.tag == "Ground")
         {
-            isGrounded = true;
+            grounded = true;
+            jumpsRemaining = maxJumpCount;
         }
     }
 
-    private void OnTriggerExit(Collider other) //se non collide con tag Ground è false riprendendo la funzione (Input.GetButtonDown("Jump") && isGrounded) sopra
+    public void OnCollisionnExit(Collision collision)
     {
-        if (other.transform.CompareTag("Ground"))
+        if (collision.gameObject.tag == "Ground")
         {
-            isGrounded = false;
+            grounded = false;
         }
     }
-
-    
 }
