@@ -12,8 +12,8 @@ public class PlayerController : MonoBehaviour
 
     [Header("Jump Settings")]
     [SerializeField] float jumpHeight = 10; //altezza che si raggiunge con il salto
-    [SerializeField] int maxJumpCount = 2; //numero di salti a disposizione
-    [SerializeField] int jumpsRemaining = 0;
+    //[SerializeField] int maxJumpCount = 2; //numero di salti a disposizione
+    //[SerializeField] int jumpsRemaining = 0;
 
     public Vector2 turn;
     public float sensitivity = 0.5f;
@@ -44,10 +44,16 @@ public class PlayerController : MonoBehaviour
 
 
         //quando uso il comando Space e ho un numero di salti a disposizione maggiore di 0: creo una forza dal basso verso l'alto sul player con il limite del jumpHeight
-        if ((Input.GetKeyDown(KeyCode.Space)) && (jumpsRemaining > 0))
+        if (Input.GetKeyDown(KeyCode.E)) //&& (jumpsRemaining > 0))
         {
             rb.AddForce(Vector3.up * jumpHeight, ForceMode.Impulse);
-            jumpsRemaining -= 1; //sottraggo un salto dall'elenco
+            //jumpsRemaining -= 1; //sottraggo un salto dall'elenco
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q)) //&& (jumpsRemaining > 0))
+        {
+            rb.AddForce(Vector3.down * jumpHeight, ForceMode.Impulse);
+            //jumpsRemaining -= 1; //sottraggo un salto dall'elenco
         }
 
         //rotazione camera con mouse
@@ -62,7 +68,7 @@ public class PlayerController : MonoBehaviour
         if(collision.gameObject.tag == "Ground")
         {
             grounded = true;
-            jumpsRemaining = maxJumpCount;
+            //jumpsRemaining = maxJumpCount;
         }
     }
 
