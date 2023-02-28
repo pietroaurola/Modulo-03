@@ -11,12 +11,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float speed = 5f;
 
     [Header("Jump Settings")]
-    [SerializeField]float jumpHeight = 10; //altezza che si raggiunge con il salto
+    [SerializeField] float jumpHeight = 10; //altezza che si raggiunge con il salto
     [SerializeField] int maxJumpCount = 2; //numero di salti a disposizione
     [SerializeField] int jumpsRemaining = 0; 
 
-    public Vector2 turn;
-    public float sensitivity = .5f;
+    [Header("Mouse Camera Settings")]
+    private Vector2 turn;
+    [SerializeField] float sensitivity = 0.5f;
+
+   
     
 
     // Start is called before the first frame update
@@ -35,12 +38,14 @@ public class PlayerController : MonoBehaviour
 
         //costruisco il vettore di movimwento
         Vector3 playerMovement = (Vector3.left * xMove + Vector3.forward * zMove).normalized * speed;
+
+        
          
         //applico la mia velocità al vettore di movimento
-        playerMovement.y = rb.velocity.y;
+        //playerMovement.y = rb.velocity.y;
 
         //applico il vettore di movimento al rigidbody
-        rb.velocity = playerMovement;
+       // rb.velocity = playerMovement;
 
         //quando uso il comando Space e ho un numero di salti a disposizione maggiore di 0: creo una forza dal basso verso l'alto sul player con il limite del jumpHeight
         if ((Input.GetKeyDown(KeyCode.Space)) && (jumpsRemaining > 0) )
@@ -49,6 +54,7 @@ public class PlayerController : MonoBehaviour
            jumpsRemaining -= 1; //sottraggo un salto dall'elenco
         }
 
+        //rotazione camera con mouse
         turn.y += Input.GetAxis("Mouse Y") * sensitivity;
         turn.x += Input.GetAxis("Mouse X") * sensitivity;
         transform.localRotation = Quaternion.Euler(-turn.y, turn.x, 0);

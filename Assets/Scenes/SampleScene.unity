@@ -431,12 +431,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92b50349467b13243870640d606b4e95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
-  jumpForce: 10
-  rb: {fileID: 536346903}
-  groundMask:
-    m_Bits: 0
-  isGrounded: 0
 --- !u!114 &536346906
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -450,11 +444,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 536346903}
-  speed: 5
-  jumpHeight: 10
+  speed: 7
+  jumpHeight: 9
   maxJumpCount: 2
   jumpsRemaining: 0
-  turn: {x: 0, y: 0}
   sensitivity: 0.5
 --- !u!1 &578579172
 GameObject:
@@ -714,7 +707,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camTarget: {fileID: 1420085258}
   pLerp: 0.05
-  rLerp: 0.01
+  rLerp: 0.03
 --- !u!81 &997926352
 AudioListener:
   m_ObjectHideFlags: 0
