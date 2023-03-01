@@ -7,14 +7,17 @@ public class PlayerController : MonoBehaviour
     private bool grounded;
     [SerializeField] Rigidbody rb;
 
-    [Header("Movement Settings")]
-    [SerializeField] float speed = 7f;
+    //[Header("Movement Settings")]
+    [SerializeField] float speed = 7;
+    
 
     [Header("Jump Settings")]
-    [SerializeField] float jumpHeight = 10; //altezza che si raggiunge con il salto
+    //[SerializeField] float jump = 10;
+    [SerializeField] float jump = 10;//altezza che si raggiunge con il salto
     //[SerializeField] int maxJumpCount = 2; //numero di salti a disposizione
     //[SerializeField] int jumpsRemaining = 0;
 
+    [Header("Mouse Settings")]
     public Vector2 turn;
     public float sensitivity = 0.5f;
 
@@ -31,36 +34,62 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         float xMove = Input.GetAxisRaw("Vertical");
-        float zMove = Input.GetAxisRaw("Horizontal");
+        float yMove = Input.GetAxisRaw("Horizontal");
 
-        //costruisco il vettore di movimwento
-        Vector3 playerMovement = (Vector3.forward * xMove + Vector3.left * zMove).normalized * speed;
+        ////costruisco il vettore di movimwento
+        Vector3 playerMovement = (transform.forward * xMove + (-transform.right * yMove)).normalized * speed;
 
-        //applico la mia velocità al vettore di movimento
+        ////applico la mia velocità al vettore di movimento
         playerMovement.y = rb.velocity.y;
+        
 
-        //applico il vettore di movimento al rigidbody
+        ////applico il vettore di movimento al rigidbody
         rb.velocity = playerMovement;
 
 
         //quando uso il comando Space e ho un numero di salti a disposizione maggiore di 0: creo una forza dal basso verso l'alto sul player con il limite del jumpHeight
-        if (Input.GetKeyDown(KeyCode.E)) //&& (jumpsRemaining > 0))
+        if (Input.GetKey(KeyCode.E)) //&& (jumpsRemaining > 0))
         {
-            rb.AddForce(Vector3.up * jumpHeight, ForceMode.Impulse);
+            rb.AddForce(Vector3.up * jump);
             //jumpsRemaining -= 1; //sottraggo un salto dall'elenco
         }
 
-        if (Input.GetKeyDown(KeyCode.Q)) //&& (jumpsRemaining > 0))
+        if (Input.GetKey(KeyCode.Q)) //&& (jumpsRemaining > 0))
         {
-            rb.AddForce(Vector3.down * jumpHeight, ForceMode.Impulse);
+            rb.AddForce(Vector3.down * jump);
             //jumpsRemaining -= 1; //sottraggo un salto dall'elenco
         }
+
+        //wasd
+        if (Input.GetKey(KeyCode.W)) //&& ()) //&& (jumpsRemaining > 0))
+        {
+            rb.AddForce(Vector3.forward * jump);
+            //jumpsRemaining -= 1; //sottraggo un salto dall'elenco
+        }
+
+        if (Input.GetKey(KeyCode.S)) //&& (jumpsRemaining > 0))
+        {
+            rb.AddForce(Vector3.back * jump);
+            //jumpsRemaining -= 1; //sottraggo un salto dall'elenco
+        }
+
+        if (Input.GetKey(KeyCode.D)) //&& (jumpsRemaining > 0))
+        {
+            rb.AddForce(Vector3.right * jump);
+            //jumpsRemaining -= 1; //sottraggo un salto dall'elenco
+        }
+
+        if (Input.GetKey(KeyCode.A)) //&& (jumpsRemaining > 0))
+        {
+            rb.AddForce(Vector3.left * jump);
+            //jumpsRemaining -= 1; //sottraggo un salto dall'elenco
+        }
+
 
         //rotazione camera con mouse
         turn.y += Input.GetAxis("Mouse Y") * sensitivity;
         turn.x += Input.GetAxis("Mouse X") * sensitivity;
         transform.localRotation = Quaternion.Euler(-turn.y, turn.x, 0);
-
     }
 
     public void OnCollisionEnter(Collision collision)
