@@ -8,89 +8,151 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Rigidbody rb;
 
     //[Header("Movement Settings")]
-    [SerializeField] float speed = 7;
+    //[SerializeField] float speed = 7;
     
 
-    [Header("Jump Settings")]
+    [Header("Pulse Settings")]
     //[SerializeField] float jump = 10;
-    [SerializeField] float jump = 10;//altezza che si raggiunge con il salto
+    [SerializeField] float pulse = 10;//altezza che si raggiunge con il salto...ORA FORZA APPLICCATA
     //[SerializeField] int maxJumpCount = 2; //numero di salti a disposizione
     //[SerializeField] int jumpsRemaining = 0;
+   
+    public float moveSpeed;
+    public Transform orientation;
+    
+    float horizontalInput;
+    float verticalInput;
+    Vector3 moveDirection;
 
     [Header("Mouse Settings")]
-    public Vector2 turn;
+    public Vector3 turn;
     public float sensitivity = 0.5f;
 
-  
+
     // Start is called before the first frame update
     void Start()
     {
-        rb = gameObject.GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
+        rb.freezeRotation = true;
 
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        float xMove = Input.GetAxisRaw("Vertical");
-        float yMove = Input.GetAxisRaw("Horizontal");
+        MyInput();
 
-        ////costruisco il vettore di movimwento
-        Vector3 playerMovement = (transform.forward * xMove + (-transform.right * yMove)).normalized * speed;
+        turn.y += Input.GetAxisRaw("Mouse Y") * sensitivity; //MI PERMETTE DI RUOTARE LA CAM SULL'ASSE Y
+        turn.x += Input.GetAxisRaw("Mouse X") * sensitivity; //MI PERMETTE DI RUOTARE LA CAM SULL'ASSE X
+        transform.localRotation = Quaternion.Euler(-turn.y, turn.x, 0); //MI PERMETTE DI CAMBIARE LA DIREZIONE DELLE FORZE QUANDO RUOTO ASSI
+    }
 
-        ////applico la mia velocità al vettore di movimento
-        playerMovement.y = rb.velocity.y;
-        
+    private void FixedUpdate()
+    {
+        MovePlayer();
+    }
 
-        ////applico il vettore di movimento al rigidbody
-        rb.velocity = playerMovement;
+    private void MyInput()
+    {
+        horizontalInput = Input.GetAxisRaw("Horizontal");
+        verticalInput = Input.GetAxisRaw("Vertical");
 
-
-        //quando uso il comando Space e ho un numero di salti a disposizione maggiore di 0: creo una forza dal basso verso l'alto sul player con il limite del jumpHeight
         if (Input.GetKey(KeyCode.E)) //&& (jumpsRemaining > 0))
         {
-            rb.AddForce(Vector3.up * jump);
+            rb.AddForce(Vector3.up * pulse);
             //jumpsRemaining -= 1; //sottraggo un salto dall'elenco
         }
 
         if (Input.GetKey(KeyCode.Q)) //&& (jumpsRemaining > 0))
         {
-            rb.AddForce(Vector3.down * jump);
+            rb.AddForce(Vector3.down * pulse);
             //jumpsRemaining -= 1; //sottraggo un salto dall'elenco
         }
+    }
 
-        //wasd
-        if (Input.GetKey(KeyCode.W)) //&& ()) //&& (jumpsRemaining > 0))
-        {
-            rb.AddForce(Vector3.forward * jump);
-            //jumpsRemaining -= 1; //sottraggo un salto dall'elenco
-        }
+    private void MovePlayer()
+    {
+        moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
-        if (Input.GetKey(KeyCode.S)) //&& (jumpsRemaining > 0))
-        {
-            rb.AddForce(Vector3.back * jump);
-            //jumpsRemaining -= 1; //sottraggo un salto dall'elenco
-        }
+        rb.AddForce(moveDirection.normalized * moveSpeed * pulse, ForceMode.Force);
+    }
 
-        if (Input.GetKey(KeyCode.D)) //&& (jumpsRemaining > 0))
-        {
-            rb.AddForce(Vector3.right * jump);
-            //jumpsRemaining -= 1; //sottraggo un salto dall'elenco
-        }
+    // Update is called once per frame
+    //void Update()
+    //{
+    //    //float xMove = Input.GetAxisRaw("Vertical");
+    //    //float yMove = Input.GetAxisRaw("Horizontal");
 
-        if (Input.GetKey(KeyCode.A)) //&& (jumpsRemaining > 0))
-        {
-            rb.AddForce(Vector3.left * jump);
-            //jumpsRemaining -= 1; //sottraggo un salto dall'elenco
-        }
+    //    ////costruisco il vettore di movimwento
+    //    //Vector3 playerMovement = (transform.forward * xMove + (-transform.right * yMove)).normalized * jump;
 
+    //    ////applico la mia velocità al vettore di movimento
+    //    //playerMovement.y = rb.velocity.y;
+
+
+    //    ////applico il vettore di movimento al rigidbody
+    //    //rb.velocity = playerMovement;
+
+
+    //   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      
+    //    //wasd force easy
+    //    rb.AddForce(Input.GetAxisRaw("Horizontal") * jump, 0, Input.GetAxisRaw("Vertical") * jump);
+
+    //    //quando uso il comando Space e ho un numero di salti a disposizione maggiore di 0: creo una forza dal basso verso l'alto sul player con il limite del jumpHeight
+    //    if (Input.GetKey(KeyCode.E)) //&& (jumpsRemaining > 0))
+    //    {
+    //        rb.AddForce(Vector3.up * jump);
+    //        //jumpsRemaining -= 1; //sottraggo un salto dall'elenco
+    //    }
+
+    //    if (Input.GetKey(KeyCode.Q)) //&& (jumpsRemaining > 0))
+    //    {
+    //        rb.AddForce(Vector3.down * jump);
+    //        //jumpsRemaining -= 1; //sottraggo un salto dall'elenco
+    //    }
+
+    //    //wasd
+    //    //if (Input.GetKey(KeyCode.W)) //&& ()) //&& (jumpsRemaining > 0))
+    //    //{
+    //    //    rb.AddForce(Vector3.forward * jump);
+    //    //    //jumpsRemaining -= 1; //sottraggo un salto dall'elenco
+    //    //}
+
+    //    //if (Input.GetKey(KeyCode.S)) //&& (jumpsRemaining > 0))
+    //    //{
+    //    //    rb.AddForce(Vector3.back * jump);
+    //    //    //jumpsRemaining -= 1; //sottraggo un salto dall'elenco
+    //    //}
+
+    //    //if (Input.GetKey(KeyCode.D)) //&& (jumpsRemaining > 0))
+    //    //{
+    //    //    rb.AddForce(Vector3.right * jump);
+    //    //    //jumpsRemaining -= 1; //sottraggo un salto dall'elenco
+    //    //}
+
+    //    //if (Input.GetKey(KeyCode.A)) //&& (jumpsRemaining > 0))
+    //    //{
+    //    //    rb.AddForce(Vector3.left * jump);
+    //    //    //jumpsRemaining -= 1; //sottraggo un salto dall'elenco
+    //    //}
 
         //rotazione camera con mouse
-        turn.y += Input.GetAxis("Mouse Y") * sensitivity;
-        turn.x += Input.GetAxis("Mouse X") * sensitivity;
-        transform.localRotation = Quaternion.Euler(-turn.y, turn.x, 0);
-    }
+    //    turn.y += Input.GetAxisRaw("Mouse Y") * sensitivity; //MI PERMETTE DI RUOTARE LA CAM SULL'ASSE Y
+    //    turn.x += Input.GetAxisRaw("Mouse X") * sensitivity; //MI PERMETTE DI RUOTARE LA CAM SULL'ASSE X
+    //    transform.localRotation = Quaternion.Euler(-turn.y, turn.x, 0); //MI PERMETTE DI CAMBIARE LA DIREZIONE DELLE FORZE QUANDO RUOTO ASSI
+
+
+    //}
+
+
+
+
+
+
+
+
+
 
     public void OnCollisionEnter(Collision collision)
     {
