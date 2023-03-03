@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private bool grounded;
+    //private bool grounded;
     [SerializeField] Rigidbody rb;
 
     //[Header("Movement Settings")]
