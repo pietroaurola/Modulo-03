@@ -145,29 +145,20 @@ public class PlayerController : MonoBehaviour
 
     //}
 
+    //public void OnCollisionEnter(Collision collision)
+    //{
+    //    if(collision.gameObject.tag == "Ground")
+    //    {
+    //        grounded = true;
+    //        //jumpsRemaining = maxJumpCount;
+    //    }
+    //}
 
-
-
-
-
-
-
-
-
-    public void OnCollisionEnter(Collision collision)
-    {
-        if(collision.gameObject.tag == "Ground")
-        {
-            grounded = true;
-            //jumpsRemaining = maxJumpCount;
-        }
-    }
-
-    public void OnCollisionnExit(Collision collision)
-    {
-        if (collision.gameObject.tag == "Ground")
-        {
-            grounded = false;
-        }
-    }
+    //public void OnCollisionnExit(Collision collision)
+    //{
+    //    if (collision.gameObject.tag == "Ground")
+    //    {
+    //        grounded = false;
+    //    }
+    //}
 }
