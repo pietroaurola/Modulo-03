@@ -39,17 +39,15 @@ public class Shooting : MonoBehaviour
 
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
         {
-            Debug.Log(hit.transform.name);
-
-            Target target = hit.transform.GetComponent<Target>();
-            if (target != null)
+            EnemyDie EnemyDie = hit.transform.GetComponent<EnemyDie>();
+            if (EnemyDie != null)
             {
-                target.TakeDamage(damage);
+                EnemyDie.TakeDamage(damage);
             }
 
             if (hit.rigidbody != null)
             {
-                hit.rigidbody.AddForce(-hit.normal * impactForce);
+               hit.rigidbody.AddForce(-hit.normal * impactForce);
             }
 
             GameObject impactGO = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
