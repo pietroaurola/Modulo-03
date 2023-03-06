@@ -9,6 +9,13 @@ public class EnemyMother : MonoBehaviour
     private Rigidbody rb;
     public Transform center;
 
+    public GameObject EnemyToSpawn;
+    public float spawnTime = 2f;
+    public float spawnRange = 10f;
+    public GameObject Home;
+
+    float spawnTimer;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,5 +30,13 @@ public class EnemyMother : MonoBehaviour
         Vector3 targetLocation = center.position - transform.position;
         float distance = targetLocation.magnitude;
         rb.AddRelativeForce(Vector3.forward * Mathf.Clamp((distance - 10) / 50, 0f, 1f) * thrust);
+
+        spawnTimer += Time.deltaTime;
+
+        if(spawnTimer >= spawnTime)
+        {
+            Instantiate(EnemyToSpawn, Random.insideUnitSphere * spawnRange, Quaternion.identity, Home.transform);
+            spawnTimer = 0;
+        }
     }
 }
