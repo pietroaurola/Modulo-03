@@ -28,6 +28,8 @@ public class PlayerController : MonoBehaviour
     public Vector3 turn;
     public float sensitivity = 0.5f;
 
+    //private float health = 1f;
+
 
     // Start is called before the first frame update
     void Start()
@@ -76,6 +78,20 @@ public class PlayerController : MonoBehaviour
 
         rb.AddForce(moveDirection.normalized * moveSpeed * pulse, ForceMode.Force);
     }
+
+    //private void TakeDamage(float amount)
+    //{
+    //    health -= amount;
+    //    if (health <= 0f)
+    //    {
+    //        Die();
+    //    }
+    //}
+
+    //void Die()
+    //{
+    //    menu morte
+    //}
 
     // Update is called once per frame
     //void Update()
