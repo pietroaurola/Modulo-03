@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+
 
 public class PlayerController : MonoBehaviour
 {
@@ -86,8 +86,9 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.tag == "Enemy")
         {
-            SceneManager.LoadScene(2);
-            m.gameover();
+            //SceneManager.LoadScene(2);
+            m.GameOver();
+            Cursor.lockState = CursorLockMode.Confined;
         }
     }
 

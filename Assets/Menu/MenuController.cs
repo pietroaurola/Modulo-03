@@ -20,7 +20,7 @@ public class MenuController : MonoBehaviour
         Application.Quit();
     }
 
-    public void gameover()
+    public void GameOver()
     {
         SceneManager.LoadScene(2);
     }
