@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -9,17 +10,17 @@ public class PlayerController : MonoBehaviour
 
     //[Header("Movement Settings")]
     //[SerializeField] float speed = 7;
-    
+
 
     [Header("Pulse Settings")]
     //[SerializeField] float jump = 10;
     [SerializeField] float pulse = 10;//altezza che si raggiunge con il salto...ORA FORZA APPLICCATA
-    //[SerializeField] int maxJumpCount = 2; //numero di salti a disposizione
-    //[SerializeField] int jumpsRemaining = 0;
-   
+                                      //[SerializeField] int maxJumpCount = 2; //numero di salti a disposizione
+                                      //[SerializeField] int jumpsRemaining = 0;
+
     public float moveSpeed;
     public Transform orientation;
-    
+
     float horizontalInput;
     float verticalInput;
     Vector3 moveDirection;
@@ -28,7 +29,7 @@ public class PlayerController : MonoBehaviour
     public Vector3 turn;
     public float sensitivity = 0.5f;
 
-    //private float health = 1f;
+    MenuController m;
 
 
     // Start is called before the first frame update
@@ -38,6 +39,8 @@ public class PlayerController : MonoBehaviour
         rb.freezeRotation = true;
 
         Cursor.lockState = CursorLockMode.Locked;
+
+        m = FindObjectOfType<MenuController>();
     }
 
     void Update()
@@ -77,6 +80,15 @@ public class PlayerController : MonoBehaviour
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
         rb.AddForce(moveDirection.normalized * moveSpeed * pulse, ForceMode.Force);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Enemy")
+        {
+            SceneManager.LoadScene(2);
+            m.gameover();
+        }
     }
 
     //private void TakeDamage(float amount)

@@ -10,6 +10,9 @@ public class EnemyDaughter : MonoBehaviour
     public float distance;
     public float AreaDiAllerta;
 
+    
+    public float BounceForce;
+
     void Update()
     {
         CalcoloDistanza = Vector3.Distance(transform.position, target.position);
@@ -33,5 +36,15 @@ public class EnemyDaughter : MonoBehaviour
 
         }
     }
+
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    if(collision.transform.tag == ("Enemy"))
+    //    {
+    //        Rigidbody otherRB = collision.rigidbody;
+    //        otherRB.AddExplosionForce(BounceForce, collision.contacts[0].point, 5);
+    //        Debug.Log("diooooooo");
+    //    }
+    //}
 
 }
