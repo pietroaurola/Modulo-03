@@ -24,4 +24,9 @@ public class MenuController : MonoBehaviour
     {
         SceneManager.LoadScene(2);
     }
+
+    public void YouWin()
+    {
+        SceneManager.LoadScene(3);
+    }
 }

@@ -39,6 +39,12 @@ public class Shooting : MonoBehaviour
 
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
         {
+            DaughterDie DaughterDie = hit.transform.GetComponent<DaughterDie>();
+            if (DaughterDie != null)
+            {
+                DaughterDie.TakeDamage(damage);
+            }
+
             EnemyDie EnemyDie = hit.transform.GetComponent<EnemyDie>();
             if (EnemyDie != null)
             {

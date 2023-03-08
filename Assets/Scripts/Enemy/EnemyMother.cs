@@ -19,10 +19,15 @@ public class EnemyMother : MonoBehaviour
     public Vector3 minPosition;
     public Vector3 maxPosition;
 
+    public float health = 0f;
+    MenuController m;
+
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+
+        m = FindObjectOfType<MenuController>();
     }
 
     // Update is called once per frame
@@ -47,4 +52,18 @@ public class EnemyMother : MonoBehaviour
             spawnTimer = 0;
         }
     }
+
+    //public void TakeDamage(float amount)
+    //{
+    //    health -= amount;
+    //    if (health <= 0f)
+    //    {
+    //        Die();
+    //    }
+    //}
+
+    //void Die()
+    //{
+    //    m.YouWin();
+    //}
 }

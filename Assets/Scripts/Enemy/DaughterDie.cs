@@ -2,15 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyDie : MonoBehaviour
+public class DaughterDie : MonoBehaviour
 {
     public float health = 50f;
-    MenuController m;
-
-    private void Start()
-    {
-        m = FindObjectOfType<MenuController>();
-    }
 
     public void TakeDamage(float amount)
     {
@@ -23,11 +17,6 @@ public class EnemyDie : MonoBehaviour
 
     void Die()
     {
-        Cursor.lockState = CursorLockMode.Confined;
-
         Destroy(gameObject);
-
-        m.YouWin();
-
     }
 }
