@@ -9,12 +9,15 @@ public class EnemyMother : MonoBehaviour
     private Rigidbody rb;
     public Transform center;
 
+    //public GameObject EnemyMother;
     public GameObject EnemyToSpawn;
     public float spawnTime = 2f;
     public float spawnRange = 10f;
     public GameObject Home;
 
     float spawnTimer;
+    public Vector3 minPosition;
+    public Vector3 maxPosition;
 
     // Start is called before the first frame update
     void Start()
@@ -35,7 +38,12 @@ public class EnemyMother : MonoBehaviour
 
         if(spawnTimer >= spawnTime)
         {
-            Instantiate(EnemyToSpawn, Random.insideUnitSphere * spawnRange, Quaternion.identity, Home.transform);
+            //Object.Instantiate(EnemyToSpawn, Random.insideUnitSphere * spawnRange, Quaternion.identity, Home.transform);
+            //spawnTimer = 0;
+
+            Vector3 randomPosition = new Vector3(Random.Range(minPosition.x, maxPosition.x), Random.Range(minPosition.y, maxPosition.y), Random.Range(minPosition.z, maxPosition.z));
+            Instantiate(EnemyToSpawn, randomPosition, Quaternion.identity, Home.transform);
+
             spawnTimer = 0;
         }
     }

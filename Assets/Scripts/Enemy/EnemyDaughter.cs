@@ -28,15 +28,6 @@ public class EnemyDaughter : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter(Collider other)
-    {
-        if(other.gameObject.CompareTag("Enemy"))
-        {
-            Debug.Log("Enemy colpito");
-
-        }
-    }
-
     //private void OnCollisionEnter(Collision collision)
     //{
     //    if(collision.transform.tag == ("Enemy"))
