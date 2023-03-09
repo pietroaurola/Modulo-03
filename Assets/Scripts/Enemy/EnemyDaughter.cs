@@ -4,17 +4,29 @@ using UnityEngine;
 
 public class EnemyDaughter : MonoBehaviour
 {
+    //per controllo distanza con il player
     public Transform target;
     public float Speed;
     float CalcoloDistanza;
     public float distance;
     public float AreaDiAllerta;
 
-    
-    public float BounceForce;
+    Rigidbody rb;
+
+    //per controllo distanza tra sorelle
+    public float nearDistance;
+    public float stoppingDistance;
+
+    public Transform Enemy;
+
+    void Start()
+    {
+        Enemy = GameObject.FindGameObjectWithTag("Enemy").transform;
+    }
 
     void Update()
     {
+
         CalcoloDistanza = Vector3.Distance(transform.position, target.position);
 
         if(CalcoloDistanza < distance * AreaDiAllerta)
@@ -26,16 +38,50 @@ public class EnemyDaughter : MonoBehaviour
         {
             transform.position = Vector3.Lerp(transform.position, target.position, Time.deltaTime * Speed);
         }
+
+        //calcolo distanza tra sorelle
+        if (Vector3.Distance(transform.position, Enemy.position) <= nearDistance)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, Enemy.position, -Speed * Time.deltaTime);
+        }
+        else if(Vector3.Distance(transform.position, Enemy.position) >stoppingDistance)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, Enemy.position, Speed * Time.deltaTime);
+        }
+        else if(Vector3.Distance(transform.position, Enemy.position) < stoppingDistance && Vector3.Distance(transform.position, Enemy.position) > nearDistance)
+        {
+            transform.position = this.transform.position;
+        }
+
+
+          
+            //if(Vector3.Distance(transform.position, Enemy.position) < nearDistance)
+            //{
+            //    transform.position = Vector3.MoveTowards(transform.position, Enemy.position, -Speed * Time.deltaTime);
+            //}
+            //else if(Vector3.Distance(transform.position, Enemy.position) >stoppingDistance)
+            //{
+            //    transform.position = Vector3.MoveTowards(transform.position, Enemy.position, Speed * Time.deltaTime);
+            //}
+            //else if(Vector3.Distance(transform.position, Enemy.position) < stoppingDistance && Vector3
+            //    .Distance(transform.position, Enemy.position) > nearDistance)
+            //{
+            //    transform.position = this.transform.position;
+            //}
+        }
+
+
+
+
+
+        //private void OnCollisionEnter(Collision collision)
+        //{
+        //    if(collision.transform.tag == ("Enemy"))
+        //    {
+        //        Rigidbody otherRB = collision.rigidbody;
+        //        otherRB.AddExplosionForce(BounceForce, collision.contacts[0].point, 5);
+        //        Debug.Log("diooooooo");
+        //    }
+        //}
+
     }
-
-    //private void OnCollisionEnter(Collision collision)
-    //{
-    //    if(collision.transform.tag == ("Enemy"))
-    //    {
-    //        Rigidbody otherRB = collision.rigidbody;
-    //        otherRB.AddExplosionForce(BounceForce, collision.contacts[0].point, 5);
-    //        Debug.Log("diooooooo");
-    //    }
-    //}
-
-}
