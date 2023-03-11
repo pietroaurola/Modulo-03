@@ -8,6 +8,8 @@ public class DaughterDie : MonoBehaviour
 
     public void TakeDamage(float amount)
     {
+        Debug.Log("colpito");
+
         health -= amount;
         if (health <= 0f)
         {
