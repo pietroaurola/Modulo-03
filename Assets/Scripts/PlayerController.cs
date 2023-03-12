@@ -29,7 +29,8 @@ public class PlayerController : MonoBehaviour
     public Vector3 turn;
     public float sensitivity = 0.5f;
 
-    MenuController m;
+    private MenuController m;
+    
 
 
     // Start is called before the first frame update
@@ -82,15 +83,15 @@ public class PlayerController : MonoBehaviour
         rb.AddForce(moveDirection.normalized * moveSpeed * pulse, ForceMode.Force);
     }
 
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.gameObject.tag == "Enemy")
-    //    {
-    //        //SceneManager.LoadScene(2);
-    //        m.GameOver();
-    //        Cursor.lockState = CursorLockMode.Confined;
-    //    }
-    //}
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            //SceneManager.LoadScene(2);
+            m.GameOver();
+            Cursor.lockState = CursorLockMode.Confined;
+        }
+    }
 
     //private void TakeDamage(float amount)
     //{

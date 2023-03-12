@@ -13,6 +13,8 @@ public class EnemyDaughter : MonoBehaviour
 
     Rigidbody rb;
 
+    
+
     //per controllo distanza tra sorelle
     //public float nearDistance;
     //public float stoppingDistance;
@@ -38,6 +40,8 @@ public class EnemyDaughter : MonoBehaviour
         {
             Vector3 pos = Vector3.MoveTowards(transform.position, target.position, Speed * Time.fixedDeltaTime);
             rb.MovePosition(pos);
+
+            
         }
     }
 
