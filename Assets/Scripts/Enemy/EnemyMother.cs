@@ -4,23 +4,28 @@ using UnityEngine;
 
 public class EnemyMother : MonoBehaviour
 {
+    [Header("Enemy Movement")]
     public float torque = 5f;
     public float thrust = 80f;
     private Rigidbody rb;
     public Transform center;
 
-    //public GameObject EnemyMother;
+    [Header("Daughter spawn")]
     public GameObject EnemyToSpawn;
-    public float spawnTime = 2f;
-    public float spawnRange = 10f;
-    public GameObject Home;
 
+    public float spawnTime = 2f;
     float spawnTimer;
+
+    public float spawnRange = 10f;
     public Vector3 minPosition;
     public Vector3 maxPosition;
 
+    public GameObject Home;
+
+    [Header("Life")]
     public float health = 0f;
-    MenuController m;
+
+    private MenuController m;
 
     // Start is called before the first frame update
     void Start()
@@ -37,15 +42,12 @@ public class EnemyMother : MonoBehaviour
 
         Vector3 targetLocation = center.position - transform.position;
         float distance = targetLocation.magnitude;
-        rb.AddRelativeForce(Vector3.forward * Mathf.Clamp((distance - 10) / 50, 0f, 1f) * thrust);
+        rb.AddRelativeForce(Mathf.Clamp((distance - 10) / 50, 0f, 1f) * thrust * Vector3.forward); //serve per creare l'effetto elastico per il muovimento della madre
 
-        spawnTimer += Time.deltaTime;
 
+        spawnTimer += Time.deltaTime; //spawn daugheter
         if(spawnTimer >= spawnTime)
         {
-            //Object.Instantiate(EnemyToSpawn, Random.insideUnitSphere * spawnRange, Quaternion.identity, Home.transform);
-            //spawnTimer = 0;
-
             Vector3 randomPosition = new Vector3(Random.Range(minPosition.x, maxPosition.x), Random.Range(minPosition.y, maxPosition.y), Random.Range(minPosition.z, maxPosition.z));
 
             Instantiate(EnemyToSpawn, randomPosition, Quaternion.identity, Home.transform);
@@ -53,18 +55,4 @@ public class EnemyMother : MonoBehaviour
             spawnTimer = 0;
         }
     }
-
-    //public void TakeDamage(float amount)
-    //{
-    //    health -= amount;
-    //    if (health <= 0f)
-    //    {
-    //        Die();
-    //    }
-    //}
-
-    //void Die()
-    //{
-    //    m.YouWin();
-    //}
 }

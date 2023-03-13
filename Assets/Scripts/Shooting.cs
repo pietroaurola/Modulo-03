@@ -15,10 +15,17 @@ public class Shooting : MonoBehaviour
 
     private float nextTimeToFire = 0f;
 
+    private AudioSource m_AudioSourceGun;
+    private AudioSource m_AudioSourceSpace;
+ 
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        m_AudioSourceGun = GetComponent<AudioSource>();
+        m_AudioSourceSpace = GetComponent<AudioSource>();
+
+        PlaySoundSpace();
     }
 
     // Update is called once per frame
@@ -28,6 +35,7 @@ public class Shooting : MonoBehaviour
         {
             nextTimeToFire = Time.time + 1f / fireRate;
             Shoot();
+            PlaySoundGun();
         }
     }
 
@@ -53,11 +61,21 @@ public class Shooting : MonoBehaviour
 
             if (hit.rigidbody != null)
             {
-               hit.rigidbody.AddForce(-hit.normal * impactForce);
+                hit.rigidbody.AddForce(-hit.normal * impactForce);
             }
 
             GameObject impactGO = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
             Destroy(impactGO, 2f);
         }
+    }
+
+    private void PlaySoundSpace()
+    {
+        m_AudioSourceSpace.PlayOneShot(m_AudioSourceSpace.clip);
+    }
+
+    private void PlaySoundGun()
+    {
+        m_AudioSourceGun.PlayOneShot(m_AudioSourceGun.clip);
     }
 }

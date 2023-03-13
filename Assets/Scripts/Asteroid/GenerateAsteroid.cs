@@ -17,11 +17,5 @@ public class GenerateAsteroid : MonoBehaviour
             temp.localScale = temp.localScale * Random.Range(0.5f, 5);
         }
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }
 
